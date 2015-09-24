@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="kFc-Mc-hBK">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -68,7 +69,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </imageView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="MOM-GU-Rdo">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="interactive" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="MOM-GU-Rdo">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="CVU-pd-4Hh">
@@ -143,6 +144,10 @@
                                 <exclude reference="uhb-pu-fcv"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="ck2-VC-V08"/>
+                                <exclude reference="TA0-BB-Uat"/>
+                                <exclude reference="Z50-5y-xIx"/>
+                                <exclude reference="joS-1H-OX8"/>
                                 <exclude reference="4ov-pN-mBd"/>
                                 <exclude reference="R2n-Yl-w7o"/>
                                 <exclude reference="T65-M6-8Ji"/>
@@ -155,10 +160,6 @@
                                 <exclude reference="wez-6G-W18"/>
                                 <exclude reference="GAu-Ed-dQv"/>
                                 <exclude reference="f2N-Kr-ToY"/>
-                                <exclude reference="TA0-BB-Uat"/>
-                                <exclude reference="Z50-5y-xIx"/>
-                                <exclude reference="joS-1H-OX8"/>
-                                <exclude reference="ck2-VC-V08"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -170,6 +171,10 @@
                                 <include reference="uhb-pu-fcv"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="ck2-VC-V08"/>
+                                <include reference="TA0-BB-Uat"/>
+                                <include reference="Z50-5y-xIx"/>
+                                <include reference="joS-1H-OX8"/>
                                 <include reference="4ov-pN-mBd"/>
                                 <include reference="R2n-Yl-w7o"/>
                                 <include reference="T65-M6-8Ji"/>
@@ -182,10 +187,6 @@
                                 <include reference="wez-6G-W18"/>
                                 <include reference="GAu-Ed-dQv"/>
                                 <include reference="f2N-Kr-ToY"/>
-                                <include reference="TA0-BB-Uat"/>
-                                <include reference="Z50-5y-xIx"/>
-                                <include reference="joS-1H-OX8"/>
-                                <include reference="ck2-VC-V08"/>
                             </mask>
                         </variation>
                     </view>
@@ -199,7 +200,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="924" y="229"/>
+            <point key="canvasLocation" x="685.5" y="-151"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="bOy-Bd-flT">

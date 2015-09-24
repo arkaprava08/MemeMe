@@ -12,11 +12,12 @@ class MemeEditorController: UIViewController, UIImagePickerControllerDelegate, U
 
     @IBOutlet weak var pickedImage: UIImageView!
     @IBOutlet weak var cameraButton: UIBarButtonItem!
-    
     @IBOutlet weak var topTextView: UITextView!
-    
     @IBOutlet weak var bottomTextView: UITextView!
+    
     var memeImage:MemeImageModel!
+    var isViewSlidedUp = false
+    var viewSlideUpValue:CGFloat!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +25,19 @@ class MemeEditorController: UIViewController, UIImagePickerControllerDelegate, U
         
         topTextView.text = "TOP"
         bottomTextView.text = "BOTTOM"
+        
+        let memeTextAttributes = [
+            NSStrokeColorAttributeName : UIColor.blackColor(),
+            NSForegroundColorAttributeName : UIColor.whiteColor(),
+            NSFontAttributeName : UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
+            NSStrokeWidthAttributeName : 3.0
+        ]
+        
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "dismissKeyboard"))
+    }
+    
+    func dismissKeyboard() {
+        view.endEditing(true)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -34,12 +48,7 @@ class MemeEditorController: UIViewController, UIImagePickerControllerDelegate, U
             cameraButton.enabled = false
         }
         
-//        let memeTextAttributes = [
-//            NSStrokeColorAttributeName : UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1),
-//            NSForegroundColorAttributeName : UIColor(red: 0, green: 0, blue: 0, alpha: 1),
-//            NSFontAttributeName : UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
-//            NSStrokeWidthAttributeName : //TODO: Fill in appropriate Float
-//        ]
+        //TODO: Add attributes to text view
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -47,15 +56,20 @@ class MemeEditorController: UIViewController, UIImagePickerControllerDelegate, U
         self.unsubscribeFromKeyboardNotifications()
     }
     func subscribeToKeyboardNotifications() {
+        print("subscribing !")
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:"    , name: UIKeyboardWillShowNotification, object: nil)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:"    , name: UIKeyboardWillHideNotification, object: nil)
     }
     
     func unsubscribeFromKeyboardNotifications() {
+        print("unsubscribing")
         NSNotificationCenter.defaultCenter().removeObserver(self,
             name:
             UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self,
+            name:
+            UIKeyboardWillHideNotification, object: nil)
     }
     
     func getKeyboardHeight(notification: NSNotification) -> CGFloat {
@@ -65,11 +79,22 @@ class MemeEditorController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     func keyboardWillShow(notification: NSNotification) {
-        self.view.frame.origin.y -= getKeyboardHeight(notification)
+
+        print("show keyboard")
+        if bottomTextView.isFirstResponder() && !isViewSlidedUp {
+            viewSlideUpValue = getKeyboardHeight(notification)
+            self.view.frame.origin.y -= viewSlideUpValue
+            isViewSlidedUp = true
+        }
     }
     
     func keyboardWillHide(notification: NSNotification) {
-        self.view.frame.origin.y += getKeyboardHeight(notification)
+        print("hide keyboard")
+        
+        if bottomTextView.isFirstResponder() && isViewSlidedUp {
+            self.view.frame.origin.y += viewSlideUpValue
+            isViewSlidedUp = false
+        }
     }
     
     func openImagePickerFromSourceType(sourceType: UIImagePickerControllerSourceType) {
@@ -80,15 +105,16 @@ class MemeEditorController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     @IBAction func cameraAction(sender: UIBarButtonItem) {
+        
         openImagePickerFromSourceType(UIImagePickerControllerSourceType.Camera)
     }
 
     @IBAction func albumAction(sender: UIBarButtonItem) {
+        
         openImagePickerFromSourceType(UIImagePickerControllerSourceType.PhotoLibrary)
     }
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
-        print("selected")
         
         if let image = info["UIImagePickerControllerOriginalImage"] as? UIImage {
             pickedImage.image = image
@@ -98,7 +124,6 @@ class MemeEditorController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
-        print("cancelled")
         
         self.dismissViewControllerAnimated(true, completion: nil)
     }
